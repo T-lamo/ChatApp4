@@ -19,7 +19,7 @@ public class MessageModel {
     private String sender;
     private String message;
     private String TAG ="Inside Message Class";
-    private Map<String, String> datetime;
+    private long datetime;
 
     DatabaseReference databaseReference;
 
@@ -61,11 +61,11 @@ public class MessageModel {
         this.message = message;
     }
 
-    public Map<String, String> getDatetime() {
+    public long getDatetime() {
         return datetime;
     }
 
-    public void setDatetime( Map<String, String> datetime) {
+    public void setDatetime( long datetime) {
         this.datetime = datetime;
     }
 }

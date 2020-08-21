@@ -26,7 +26,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class MessageAdapter extends RecyclerView.Adapter< MessageAdapter.ViewHolder> {
@@ -62,6 +67,7 @@ public class MessageAdapter extends RecyclerView.Adapter< MessageAdapter.ViewHol
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         MessageModel m=chats.get(position);
         holder.showMessage.setText(m.getMessage());
+        holder.datetime.setText(getDate(m.getDatetime()));
     }
 
     @Override
@@ -71,12 +77,14 @@ public class MessageAdapter extends RecyclerView.Adapter< MessageAdapter.ViewHol
     class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener, View.OnLongClickListener{
 
         TextView showMessage;
+        TextView datetime;
         public  ViewHolder(View itemView){
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
             showMessage = itemView.findViewById(R.id.showMessage);
+            datetime=itemView.findViewById(R.id.datetime);
 
 
         }
@@ -109,6 +117,17 @@ public class MessageAdapter extends RecyclerView.Adapter< MessageAdapter.ViewHol
             return MSG_RECEIVER;
         }
 
+    }
+    private String getDate(long time) {
+        Calendar calendar = Calendar.getInstance();
+        TimeZone tz = TimeZone.getDefault();
+        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        java.util.Date currenTimeZone=new java.util.Date((time*1000));
+       // Toast.makeText(DisplayMessage.this, ""+sdf.format(currenTimeZone), Toast.LENGTH_SHORT).show();
+
+        return sdf.format(currenTimeZone);
     }
 }
 

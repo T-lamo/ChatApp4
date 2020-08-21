@@ -26,10 +26,16 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,7 +94,7 @@ public class DisplayMessage extends AppCompatActivity {
     }
 
     public void sendingMessage(final String receiver, String sender, String mes){
-       Map<String, String> datetime = ServerValue.TIMESTAMP;
+
         MessageModel chatMessage = new MessageModel(receiver, sender,mes);
         chatMessage.InsertMessage(chatMessage);
        final String message = mes;
@@ -185,6 +191,9 @@ public class DisplayMessage extends AppCompatActivity {
                     MessageModel model = dataSnapshot.getValue(MessageModel.class);
                     if((model.getReceiver().equals(receiver) && model.getSender().equals(sender)) || (model.getReceiver().equals(sender) && model.getSender().equals(receiver))){
                         mChats.add(model);
+
+                        getDate(model.getDatetime());
+
                     }
                 }
                 adapter= new MessageAdapter(DisplayMessage.this, mChats);
@@ -196,6 +205,19 @@ public class DisplayMessage extends AppCompatActivity {
 
             }
         });
+    }
+
+    private Date getDate(long time) {
+        Calendar calendar = Calendar.getInstance();
+        TimeZone tz = TimeZone.getDefault();
+        calendar.add(Calendar.MILLISECOND, tz.getOffset(calendar.getTimeInMillis()));
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        java.util.Date currenTimeZone=new java.util.Date((time*1000L));
+        //Toast.makeText(DisplayMessage.this, ""+sdf.format(currenTimeZone), Toast.LENGTH_SHORT).show();
+
+        return currenTimeZone;
     }
     public void userStatus(String status){
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
@@ -212,12 +234,12 @@ public class DisplayMessage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        userStatus("online");
+        //userStatus("online");
     }
     @Override
     protected void onPause() {
         super.onPause();
-        userStatus("offline");
+        //userStatus("offline");
     }
 
 }

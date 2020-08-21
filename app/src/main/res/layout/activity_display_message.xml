@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".DisplayMessage">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/displayMessage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/spaceText">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/displayMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/spaceText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -33,7 +42,7 @@
             android:layout_alignParentEnd="true"
             />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>
